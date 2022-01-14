@@ -7,9 +7,12 @@ h2 {
 }
 
 .card {
-  width: 50%;
+  width: 30%;
   margin: 0 auto;
   text-align: center;
+  border: solid lightgray 1px;
+  border-radius: 2%;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
 
 .list-group {
