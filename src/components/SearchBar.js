@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 
 function SearchBar({ sortStocks, sortedBy, handleFilter }) {
+  // const [currentFilter, setCurrentFilter] = useState("")
+  
+  // function changeFilter(event) {
+  //   setCurrentFilter(event.target.value)
+  //   handleFilter(currentFilter)
+  // }
   return (
     <div>
       <strong>Sort by:</strong>

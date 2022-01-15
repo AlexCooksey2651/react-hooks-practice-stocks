@@ -7,12 +7,12 @@ function MainContainer() {
   const [stocks, setStocks] = useState([])
   const [portfolioStocks, setPortfolioStocks] = useState([])
   const [sortedBy, setSortedBy] = useState("")
-  const [filteredBy, setFilteredBy] = useState("")
+  const [filter, setFilter] = useState("")
 
   useEffect(() => {
     fetch("http://localhost:3001/stocks")
       .then(response => response.json())
-      .then(stocks => setStocks(stocks))
+      .then(stocks => setStocks(stocks))    
   }, [])
 
   useEffect(() => {
@@ -22,19 +22,6 @@ function MainContainer() {
       sortByPrice()
     }
   }, [sortedBy])
-
-  useEffect(() => {
-    if (filteredBy === "Tech") {
-      const techStocks = showTech()
-      setStocks(techStocks)
-    } else if (filteredBy === "Sportswear") {
-      const sportswearStocks = showSportswear()
-      setStocks(sportswearStocks)
-    } else if (filteredBy === "Finance") {
-      const financeStocks = showFinance()
-      setStocks(financeStocks)
-    } 
-  }, [filteredBy])
 
   function handleAddStockToPortfolio(newStock) {
     if (!portfolioStocks.includes(newStock)) {
@@ -84,32 +71,23 @@ function MainContainer() {
   }
 
   function handleFilter(event) {
-    setFilteredBy(event.target.value)
+    const filterText = event.target.value
+    setFilter(filterText)
   }
 
-  function showTech() {
-    const techStocks = stocks.filter(stock => stock.type === "Tech")
-    return techStocks
-  }
-
-  function showSportswear() {
-    const sportswearStocks = stocks.filter(stock => stock.type === "Sportswear")
-    return sportswearStocks
-  }
-
-  function showFinance() {
-    const financeStocks = stocks.filter(stock => stock.type === "Finance")
-    return financeStocks
-  }
-
-
+  const filteredStocks = stocks.slice().filter(stock => {
+    if (filter !== "") {
+      return stock.type === filter
+    }
+    return stocks 
+  })
 
   return (
     <div>
       <SearchBar sortStocks={sortStocks} sortedBy={sortedBy} handleFilter={handleFilter}/>
       <div className="row">
         <div className="col-8">
-          <StockContainer stocks={stocks} buyStock={handleAddStockToPortfolio} />
+          <StockContainer stocks={filteredStocks} buyStock={handleAddStockToPortfolio} />
         </div>
         <div className="col-4">
           <PortfolioContainer portfolioStocks={portfolioStocks} sellStock={handleRemoveStockFromPortfolio}/>
